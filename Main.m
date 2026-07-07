@@ -72,4 +72,4 @@ mk_path = [rootPath,'/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(to
 Target_path = [rootPath,'/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex),'.txt'];
 mkdir(mk_path);
 
-GA;
+% GA;
