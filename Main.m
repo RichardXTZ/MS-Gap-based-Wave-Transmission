@@ -51,7 +51,7 @@ minsize = 0.0015;
 R_tot = (cell_sizey-minsize*2)/2;
 
 R_lim = [minsize*4,tot_sizex/6];%1
-d1_lim = [minsize*2,tot_sizex/5];%2
+d_lim = [minsize*2,tot_sizex/5];%2
 d2_lim = [minsize*2,tot_sizex/8];%2
 wn_lim = [minsize*2,minsize*6];%2
 dc_lim = [minsize*2,minsize*6];%1
@@ -65,6 +65,7 @@ crossover_probability = 0.84;
 variation_probability = 0.15;
 gene_length = 10;
 individual_size = variale_num*gene_length; 
+
 
 %% Data save set
 mk_path = [rootPath,'/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex)];
