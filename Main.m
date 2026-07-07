@@ -4,7 +4,7 @@ clear;close all
 currentFile = mfilename('fullpath');
 rootPath = fileparts(currentFile);
 
-data_path = "/data/p";
+data_path = "/.gitignore/data/p";
 pro_path = [rootPath,'/program'];
 addpath(pro_path);
 
@@ -66,8 +66,8 @@ gene_length = 10;
 individual_size = variale_num*gene_length; 
 
 %% Data save set
-mk_path = [rootPath,'/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex)];
-Target_path = [rootPath,'/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex),'.txt'];
+mk_path = [rootPath,'/.gitignore/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex)];
+Target_path = [rootPath,'/.gitignore/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex),'.txt'];
 mkdir(mk_path);
 
 GA;
