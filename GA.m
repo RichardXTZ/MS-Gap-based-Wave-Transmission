@@ -1,8 +1,8 @@
 mphstartPath = 'D:\Program Files\COMSOL\COMSOL56\Multiphysics\mli';
 % 
 Port = 2101:2110;
-Port_num = size(Port,2);
-PortConnect(Port, mphstartPath, projectDir);
+Port_num=size(Port,2);
+parpool(Port_num);
 
 initial_population = round(rand(population_size,individual_size));
 current_population = zeros(population_size,individual_size);
@@ -27,13 +27,16 @@ for era_num = 1:iterations
     mat_para = [para_air,para_bar];%[f,f_del,c_air,rho_air,p0];[rho_bar,nu_bar,E_bar];
     geo_para = [w_beam,tot_sizex,cell_sizey,cav_h,air_sizey,solid_sizey,minsize];
     para_total = [mat_para,geo_para];
-    for amo = 1:(population_size/Port_num)
-        parfor port_indi = 1:Port_num
-            indi_num = (amo-1)*Port_num + port_indi;
-            current_path = [individual_pathal(indi_num), individual_pathal2(indi_num)];
-
-            Modelcalculate(mat_para, geo_para, result_population(indi_num,:), current_path);
+    for amo=1:(population_size/Port_num)
+        parfor port_indi=1:Port_num
+            if era_num+amo==2
+                mphstart(Port(port_indi))
+            end
+            indi_num=(amo-1)*Port_num+port_indi;
+            current_path = [individual_pathal(indi_num),individual_pathal2(indi_num)];
+            Modelcalculate(mat_para,geo_para,result_population(indi_num,:),current_path);
         end
+
     end
 %     for indi_num = 1:population_size
 % %         indi_num=1;
