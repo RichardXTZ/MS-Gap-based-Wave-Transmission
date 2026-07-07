@@ -3,7 +3,7 @@ clear;close all
 %% File name set
 currentFile = mfilename('fullpath');
 rootPath = fileparts(currentFile);
-
+projectDir = rootPath;
 data_path = "/.gitignore/data/p";
 pro_path = [rootPath,'/program'];
 addpath(pro_path);

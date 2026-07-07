@@ -2,7 +2,7 @@ mphstartPath = 'D:\Program Files\COMSOL\COMSOL56\Multiphysics\mli';
 % 
 Port = 2101:2110;
 Port_num = size(Port,2);
-PortConnect(Port,mphstartPath);
+PortConnect(Port, mphstartPath, projectDir);
 
 initial_population = round(rand(population_size,individual_size));
 current_population = zeros(population_size,individual_size);

@@ -1,7 +1,7 @@
-function PortConnect(Port,mphstartPath)
+function PortConnect(Port, mphstartPath, projectDir)
 
-addpath(mphstartPath);
-Port_num = size(Port,2);
+Port_num = numel(Port);
+
 pool = gcp('nocreate');
 if isempty(pool) || pool.NumWorkers ~= Port_num
     if ~isempty(pool)
@@ -10,10 +10,19 @@ if isempty(pool) || pool.NumWorkers ~= Port_num
     pool = parpool('Processes', Port_num);
 end
 
+addAttachedFiles(pool, {
+    fullfile(projectDir, 'GA.m')
+    fullfile(projectDir, 'PortConnect.m')
+    fullfile(projectDir, 'Modelcalculate.m')
+});
+
 spmd
     cd(projectDir);
     addpath(genpath(projectDir));
-    addpath(comsolMli);
+    addpath(mphstartPath);
 
-    mphstart(Port(labindex));
+    which mphstart
+    mphstart('localhost', Port(labindex));
+end
+
 end
