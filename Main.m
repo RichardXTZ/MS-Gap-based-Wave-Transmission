@@ -37,7 +37,7 @@ para_bar = [rho_bar,nu_bar,E_bar];
 % const
 w_beam = 0.002;
 
-tot_sizex = 0.06;
+tot_sizex = 0.07;
 cell_sizey = tot_sizex;
 
 air_sizey = lambda_air*2;
@@ -66,8 +66,10 @@ gene_length = 10;
 individual_size = variale_num*gene_length; 
 
 %% Data save set
-mk_path = [rootPath,'/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex)];
-Target_path = [rootPath,'/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex),'.txt'];
+mk_path = [rootPath,'/.gitignore/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex)];
+da_path = [rootPath,'/.gitignore/data'];
+Target_path = [rootPath,'/.gitignore/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex),'.txt'];
+mkdir(da_path);
 mkdir(mk_path);
 
 GA;
