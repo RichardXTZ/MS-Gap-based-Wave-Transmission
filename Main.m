@@ -4,8 +4,8 @@ clear;close all
 currentFile = mfilename('fullpath');
 rootPath = fileparts(currentFile);
 
-data_path = "/data/p";
-pro_path = [rootPath,'/program'];
+data_path = "/.gitignore/data/p";
+pro_path = [rootPath,'/.gitignore/program'];
 addpath(pro_path);
 
 %% Acoustic Parameters
