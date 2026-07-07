@@ -38,23 +38,22 @@ para_bar = [rho_bar,nu_bar,E_bar];
 w_beam = 0.002;
 
 tot_sizex = 0.06;
-cell_sizey = tot_sizex*1.5;
+cell_sizey = tot_sizex;
 
 air_sizey = lambda_air*2;
 solid_sizey = lambda_bar*2;
 
-cav_h = lambda_air;
+cav_h = 0.07;
 
 minsize = 0.0015;
 
 % variable
 R_tot = (cell_sizey-minsize*2)/2;
 
-R_lim = [minsize*4,tot_sizex/6];%1
-d_lim = [minsize*2,tot_sizex/5];%2
-d2_lim = [minsize*2,tot_sizex/8];%2
-wn_lim = [minsize*2,minsize*6];%2
-dc_lim = [minsize*2,minsize*6];%1
+R_lim = [minsize*2,tot_sizex/5];%1
+d_lim = [minsize*2,tot_sizex/4];%2
+wn_lim = [minsize,minsize*6];%2
+dc_lim = [minsize,minsize*8];%1
 prop_lim = [0.1,0.9];%NaN
 
 variale_num = 6;
@@ -66,10 +65,9 @@ variation_probability = 0.15;
 gene_length = 10;
 individual_size = variale_num*gene_length; 
 
-
 %% Data save set
 mk_path = [rootPath,'/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex)];
 Target_path = [rootPath,'/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex),'.txt'];
 mkdir(mk_path);
 
-% GA;
+GA;
