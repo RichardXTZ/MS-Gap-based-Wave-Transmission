@@ -37,8 +37,8 @@ para_bar = [rho_bar,nu_bar,E_bar];
 % const
 w_beam = 0.002;
 
-tot_sizex = 0.03;
-cell_sizey = 0.024;
+tot_sizex = 0.030;
+cell_sizey = 0.012;
 
 air_sizey = lambda_air*2;
 solid_sizey = lambda_bar*2;
@@ -50,7 +50,7 @@ minsize = 0.0015;
 % variable
 w_lim = [minsize*2,tot_sizex-w_beam*3-minsize*4];%1
 h_lim = [minsize*2,cell_sizey-w_beam*2];
-n_lim = [minsize,minsize*4];
+n_lim = [minsize/3,minsize*1.2];
 variale_num = 3;
 %% GA Parameters
 iterations = 1e4;
