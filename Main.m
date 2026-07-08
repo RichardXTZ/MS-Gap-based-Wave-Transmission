@@ -37,7 +37,7 @@ para_bar = [rho_bar,nu_bar,E_bar];
 % const
 w_beam = 0.002;
 
-tot_sizex = 0.06;
+tot_sizex = 0.05;
 cell_sizey = tot_sizex;
 
 air_sizey = lambda_air*2;
@@ -50,13 +50,10 @@ minsize = 0.0015;
 % variable
 R_tot = (cell_sizey-minsize*2)/2;
 
-R_lim = [minsize*2,tot_sizex/5];%1
-d_lim = [minsize*2,tot_sizex/4];%2
-wn_lim = [minsize,minsize*6];%2
-dc_lim = [minsize,minsize*8];%1
-prop_lim = [0.1,0.9];%NaN
-
-variale_num = 6;
+R_lim = [minsize*2,tot_sizex/2-minsize*2];%1
+d1_lim = [0.001,minsize*8];
+d2_lim = [0.001,minsize*8];
+variale_num = 3;
 %% GA Parameters
 iterations = 1e4;
 population_size = 30;

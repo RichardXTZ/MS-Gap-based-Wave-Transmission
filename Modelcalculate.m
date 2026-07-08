@@ -42,27 +42,13 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         model.param.set('minsize',[num2str(geo_para(7)),'[m]']);
     
     
-        model.param.set('R1',[num2str(var_para(1)),'[m]']);
-        model.param.set('d1',[num2str(var_para(2))]);
-        model.param.set('d2',[num2str(var_para(3))]);
-        model.param.set('wnu',[num2str(var_para(4)),'[m]']);
-        model.param.set('wnd',[num2str(var_para(5)),'[m]']);
-        model.param.set('dc',[num2str(var_para(6)),'[m]']);
+        model.param.set('R',[num2str(var_para(1)),'[m]']);
+        model.param.set('d1',[num2str(var_para(2)),'[m]']);
+        model.param.set('d2',[num2str(var_para(3)),'[m]']);
+        model.param.set('du','min(R,d1)');
+        model.param.set('dd','min(R,d2)');
     
-        R = var_para(1);
-        d1 = var_para(2);
-        d2 = var_para(3);
-        tot_sizex = geo_para(2);
-        minsize = geo_para(7);
-    
-        if R+d1+d2<tot_sizex/2-minsize/2
-            model.param.set('R2','R1+d1');
-            model.param.set('R3','R2+d2');
-        else
-            model.param.set('R3','tot_sizex/2-minsize*2');
-            model.param.set('R2','tot_sizex/2-minsize*4');
-        end
-    
+
         %% Create Goem
         myCavA = myGeom.create('CavA','Rectangle');
         myCavA.set('size',{'tot_sizex' 'cav_h'});
@@ -88,39 +74,20 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     
         myR1 = myGeom.create('c1', 'Circle');
         myR1.set('pos', {'tot_sizex/2' 'cell_sizey/2'});
-        myR1.set('r', 'R3');
+        myR1.set('r', 'R');
         
-        myR2 = myGeom.create('c2', 'Circle');
-        myR2.set('pos', {'tot_sizex/2' 'cell_sizey/2'});
-        myR2.set('r', 'R2');
-    
-        myDif1 = myGeom.create('dif1', 'Difference');
-        myDif1.selection('input').set({'c1'});
-        myDif1.selection('input2').set({'c2'});
-    
-        myR3 = myGeom.create('c3', 'Circle');
-        myR3.set('pos', {'tot_sizex/2' 'cell_sizey/2'});
-        myR3.set('r', 'R1');
     
         myCor1 = myGeom.create('Cor1','Rectangle');
-        myCor1.set('size',{'min(wnd,R3-R2)' 'cell_sizey/2'});
-        myCor1.set('pos',{'tot_sizex/2-R3' '0'});
+        myCor1.set('size',{'du' 'cell_sizey/2'});
+        myCor1.set('pos',{'tot_sizex/2-du/2' 'cell_sizey/2'});
     
         myCor2 = myGeom.create('Cor2','Rectangle');
-        myCor2.set('size',{'min(wnd,R3-R2)' 'cell_sizey/2'});
-        myCor2.set('pos',{'tot_sizex/2+R3-min(wnd,R3-R2)' '0'});
-    
-        myCor3 = myGeom.create('Cor3','Rectangle');
-        myCor3.set('size',{'wnu' '(R3-R2)/2+(cell_sizey-2*R3)/2'});
-        myCor3.set('pos',{'tot_sizex/2-wnu/2' 'cell_sizey-((R3-R2)/2+(cell_sizey-2*R3)/2)'});
-    
-        myNec = myGeom.create('Nec','Rectangle');
-        myNec.set('size',{'min(dc,R1)' '(R3+R2)/2'});
-        myNec.set('pos',{'tot_sizex/2-min(dc,R1)/2' 'cell_sizey/2-(R3+R2)/2'});
+        myCor2.set('size',{'dd' 'cell_sizey/2'});
+        myCor2.set('pos',{'tot_sizex/2-dd/2' '0'});
     
        
         myMetauin = myGeom.create('uni1', 'Union');
-        myMetauin.selection('input').set({'c3' 'dif1' 'Cor1' 'Cor2' 'Cor3' 'Nec'});
+        myMetauin.selection('input').set({'c1' 'Cor1' 'Cor2'});
         myMetauin.set('intbnd', false);
         
     
@@ -140,7 +107,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         myBoxsel.set('ymax', 'cell_sizey+minsize/200');
     
         myFil = myGeom.create('fil1', 'Fillet');
-        myFil.set('radius', 'minsize/10');
+        myFil.set('radius', 'minsize/6');
         myFil.selection('point').named('boxsel1');
     
         myMeta1 = myGeom.create('Meta1','Rectangle');
@@ -169,7 +136,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         strCellsel = 'Cellsel';
         myMetasel = myComp.selection.create(strCellsel, 'Explicit');
         myMetasel.label(strCellsel);
-        myMetasel.set([4 8 9 10]);
+        myMetasel.set([4 8]);
     
         strCavsel = 'Cavsel';
         myCavsel = myComp.selection.create(strCavsel,'Box');
@@ -295,7 +262,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         myMulti.selection.all;
     
         myMeshMeta = myMesh.create('ftri1', 'FreeTri');
-        myMeshMeta.selection.set([4 7 8 9 10]);
+        myMeshMeta.selection.set([4 7 8]);
         myMeshMetasize = myMeshMeta.create('size1', 'Size');
         myMeshMetasize.set('custom', 'on');
         myMeshMetasize.set('hmax', 'lambda_air/12');

@@ -1,6 +1,6 @@
 mphstartPath = 'D:\Program Files\COMSOL\COMSOL56\Multiphysics\mli';
 % 
-Port = 2101:2110;
+Port = 2111:2120;
 Port_num=size(Port,2);
 parpool(Port_num);
 
@@ -22,7 +22,7 @@ addpath(pro_path);
 for era_num = 1:iterations
     t0=tic;
     current_population = initial_population;
-    [result_population] = Translation(current_population,gene_length,R_lim,d_lim,wn_lim,dc_lim,prop_lim,0.00001);
+    [result_population] = Translation(current_population,gene_length,R_lim,d1_lim,d2_lim,0.00001);
 
     mat_para = [para_air,para_bar];%[f,f_del,c_air,rho_air,p0];[rho_bar,nu_bar,E_bar];
     geo_para = [w_beam,tot_sizex,cell_sizey,cav_h,air_sizey,solid_sizey,minsize];
