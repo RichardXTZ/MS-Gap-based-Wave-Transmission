@@ -78,15 +78,15 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     
         myNec = myGeom.create('Nec','Rectangle');
         myNec.set('size',{'w_beam' 'w_beam'});
-        myNec.set('pos',{'w_beam+ne' '(cell_sizey-w_beam)/2'});
+        myNec.set('pos',{'w_beam+wi' '(cell_sizey-w_beam)/2'});
 
         myCav = myGeom.create('Cav','Rectangle');
         myCav.set('size',{'wi' 'hi'});
-        myCav.set('pos',{'w_beam*2+ne' '(cell_sizey-hi)/2'});
+        myCav.set('pos',{'w_beam+wi' '(cell_sizey-w_beam)/2'});
     
        
         myMetauin = myGeom.create('uni1', 'Union');
-        myMetauin.selection('input').set({'Cor' 'Nec' 'Cav'});
+        myMetauin.selection('input').set({'c1' 'Cor1' 'Cor2'});
         myMetauin.set('intbnd', false);
         
     

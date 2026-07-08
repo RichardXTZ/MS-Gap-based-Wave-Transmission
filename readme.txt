@@ -1,4 +1,1 @@
-简化结构为：
-|
-O
-|
+Helmoholz Cavity
