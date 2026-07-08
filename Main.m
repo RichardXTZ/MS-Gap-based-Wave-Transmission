@@ -37,13 +37,13 @@ para_bar = [rho_bar,nu_bar,E_bar];
 % const
 w_beam = 0.002;
 
-tot_sizex = 0.07;
+tot_sizex = 0.06;
 cell_sizey = tot_sizex;
 
 air_sizey = lambda_air*2;
 solid_sizey = lambda_bar*2;
 
-cav_h = 0.07;
+cav_h = 0.06;
 
 minsize = 0.0015;
 
