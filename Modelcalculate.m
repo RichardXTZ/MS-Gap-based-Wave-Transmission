@@ -42,9 +42,12 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         model.param.set('minsize',[num2str(geo_para(7)),'[m]']);
     
     
-        model.param.set('wi',[num2str(var_para(1)),'[m]']);
+        model.param.set('wi_ori',[num2str(var_para(1)),'[m]']);
         model.param.set('hi',[num2str(var_para(2)),'[m]']);
         model.param.set('ne',[num2str(var_para(3)),'[m]']);
+        model.param.set('wn',[num2str(var_para(4)),'[m]']);
+        model.param.set('ln',[num2str(var_para(5)),'[m]']);
+        model.param.set('wi','min(wi_ori,tot_sizex-w_beam*2-wn-ne)');
 %         model.param.set('du','min(R,d1)');
 %         model.param.set('dd','min(R,d2)');
     
@@ -77,12 +80,12 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         myCor.set('pos',{'w_beam' '0'});
     
         myNec = myGeom.create('Nec','Rectangle');
-        myNec.set('size',{'w_beam' 'w_beam'});
-        myNec.set('pos',{'w_beam+ne' '(cell_sizey-w_beam)/2'});
+        myNec.set('size',{'wn' 'ln'});
+        myNec.set('pos',{'w_beam+ne' '(cell_sizey-ln)/2'});
 
         myCav = myGeom.create('Cav','Rectangle');
         myCav.set('size',{'wi' 'hi'});
-        myCav.set('pos',{'w_beam*2+ne' '(cell_sizey-hi)/2'});
+        myCav.set('pos',{'w_beam+wn+ne' '(cell_sizey-hi)/2'});
     
        
         myMetauin = myGeom.create('uni1', 'Union');
@@ -365,7 +368,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         myAve.set('probetag', 'none');
         myAve.set('data', 'cln1');
         myAve.set('table', 'tbl1');
-        myAve.set('expr', {'abs(acpr.p_s)/p0'});
+        myAve.set('expr', {'(acpr.p_s)/p0'});
         myAve.set('unit', {'Pa'});
         myAve.set('descr', {''});
         myAve.setResult;
@@ -374,7 +377,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         myAve2.set('probetag', 'none');
         myAve2.set('data', 'cln2');
         myAve2.set('table', 'tbl2');
-        myAve2.set('expr', {'solid.pm'});
+        myAve2.set('expr', {'(solid.sy)/sqrt(c_bar*rho_bar)'});
         myAve2.set('unit', {'Pa'});
         myAve2.set('descr', {''});
         myAve2.setResult;
