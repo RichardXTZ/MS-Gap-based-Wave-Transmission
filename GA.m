@@ -65,25 +65,25 @@ for era_num = 1:iterations
         Apre_R2=fileResult(6);
 
         ampRe_L(individual_num)=abs(Apre_L);
-        argRe_L2(individual_num)=angle(Apre_L2);
+        ampRe_LT(individual_num)=abs(Apre_L2);
         ampRe_M(individual_num)=abs(Apre_M);
-        argRe_M2(individual_num)=angle(Apre_M2);
+        ampRe_MT(individual_num)=abs(Apre_M2);
         ampRe_R(individual_num)=abs(Apre_R);
-        argRe_R2(individual_num)=angle(Apre_R2);
+        ampRe_RT(individual_num)=abs(Apre_R2);
     end
 
      % delta_test_L = abs((ampRe_L).^2)*0.8+0.2*abs(argRe_L2-Target_pha)/pi;
      % delta_test_M = abs((ampRe_M).^2)*0.8+0.2*abs(argRe_M2-Target_pha)/pi;
      % delta_test_R = abs((ampRe_R).^2)*0.8+0.2*abs(argRe_R2-Target_pha)/pi;
 
-     delta_test_L = abs((ampRe_L).^2);
-     delta_test_M = abs((ampRe_M).^2);
-     delta_test_R = abs((ampRe_R).^2);
+     delta_test_L = abs(1-(ampRe_LT).^2);
+     delta_test_M = abs(1-(ampRe_MT).^2);
+     delta_test_R = abs(1-(ampRe_RT).^2);
 
      delta_test_ave = (delta_test_L+delta_test_R)./2;
      delta_test=delta_test_M*0.9+delta_test_ave*0.1;
 
-     delta_T = [delta_test',delta_test_M',argRe_M2'];
+     delta_T = [delta_test',delta_test_M',delta_test_ave'];
  
      new_population_data = [delta_T,current_population,result_population];
     
