@@ -9,8 +9,8 @@ pro_path = [rootPath,'/program'];
 addpath(pro_path);
 
 %% Acoustic Parameters
-f = 15000;
-f_del = 100;
+f = 10000;
+f_del = 50;
 c_air = 343;
 rho_air = 1.21;
 lambda_air = c_air/f;
@@ -37,23 +37,23 @@ para_bar = [rho_bar,nu_bar,E_bar];
 % const
 w_beam = 0.001;
 
-tot_sizex = 0.02;
+tot_sizex = 0.016;
 cell_sizey = tot_sizex;
 
 air_sizey = lambda_air*2;
 solid_sizey = lambda_bar*2;
 
-cav_h = 0.01;
+cav_h = 0.03;
 
 minsize = 0.001;
 
 % variable
 R_tot = (cell_sizey-minsize*2)/2;
 
-R_lim = [minsize*2,tot_sizex/5];%1
-d_lim = [minsize*2,tot_sizex/4];%2
-wn_lim = [minsize,minsize*4];%2
-dc_lim = [minsize,minsize*4];%1
+R_lim = [0.0015, 0.0032];%1
+d_lim = [0.0010, 0.0020];%2
+wn_lim = [0.0008, 0.0020];%2
+dc_lim = [0.0008, 0.0020];%1
 prop_lim = [0.1,0.9];%NaN
 
 variale_num = 6;
