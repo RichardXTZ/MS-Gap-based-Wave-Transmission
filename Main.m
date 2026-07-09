@@ -35,25 +35,25 @@ para_bar = [rho_bar,nu_bar,E_bar];
 
 %% Structure Parameters
 % const
-w_beam = 0.0015;
+w_beam = 0.001;
 
-tot_sizex = 0.018;
+tot_sizex = 0.016;
 cell_sizey = 0.012;
 
 air_sizey = lambda_air*2;
 solid_sizey = lambda_bar*2;
 
-cav_h = 0.034;
+cav_h = 0.03;
 
-minsize = 0.0015;
+minsize = 0.001;
 
 % variable
 
-hi_lim = [minsize*2,cell_sizey-w_beam*2];
-ne_lim = [minsize/3,minsize*1.2];
-wn_lim = [0.0008,0.002];
-ln_lim = [0.0008,0.0025];
-wi_lim = [minsize*2,tot_sizex-w_beam*2-wn_lim(1)-ne_lim(1)];%1
+hi_lim = [0.0025, 0.0045];
+ne_lim = [0.0005, 0.0015];
+wn_lim = [0.0008, 0.0020];
+ln_lim = [0.0008, 0.0025];
+wi_lim = [0.0035, 0.0075];
 variale_num = 5;
 %% GA Parameters
 iterations = 1e4;
