@@ -35,7 +35,7 @@ para_bar = [rho_bar,nu_bar,E_bar];
 
 %% Structure Parameters
 % const
-w_beam = 0.0012;
+w_beam = 0.001;
 
 tot_sizex = 0.03;
 cell_sizey = tot_sizex;
@@ -45,7 +45,7 @@ solid_sizey = lambda_bar*2;
 
 cav_h = 0.04;
 
-minsize = 0.001;
+minsize = 0.0005;
 
 % variable
 R_tot = (cell_sizey-minsize*2)/2;

@@ -48,7 +48,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     model.param.set('wnu',[num2str(var_para(4)),'[m]']);
     model.param.set('wnd',[num2str(var_para(5)),'[m]']);
     model.param.set('dc',[num2str(var_para(6)),'[m]']);
-    model.param.set('d2','min(d2_ori,tot_sizex/2-R1-d1-w_beam)');
+    model.param.set('d2','min(d2_ori,)');
 
     R = var_para(1);
     d1 = var_para(2);
