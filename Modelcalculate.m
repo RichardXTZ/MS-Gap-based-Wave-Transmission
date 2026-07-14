@@ -94,7 +94,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
 
         myCav2 = myGeom.create('Cav2','Rectangle');
         myCav2.set('size',{'wi2' 'hi2'});
-        myCav2.set('pos',{'w_beam+wn+ne' '(cell_sizey/2-hi2)/2+cell_sizey/2'});
+        myCav2.set('pos',{'w_beam+wn2+ne' '(cell_sizey/2-hi2)/2+cell_sizey/2'});
 
         myNec2 = myGeom.create('Nec2','Rectangle');
         myNec2.set('size',{'wn2' 'ln2'});
