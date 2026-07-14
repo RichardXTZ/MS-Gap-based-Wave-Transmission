@@ -35,10 +35,10 @@ para_bar = [rho_bar,nu_bar,E_bar];
 
 %% Structure Parameters
 % const
-w_beam = 0.001;
+w_beam = 0.0012;
 
 tot_sizex = 0.016;
-cell_sizey = 0.012;
+cell_sizey = 0.024;
 
 air_sizey = lambda_air*2;
 solid_sizey = lambda_bar*2;
@@ -49,12 +49,23 @@ minsize = 0.001;
 
 % variable
 
-hi_lim = [0.0025, 0.0045];
-ne_lim = [0.0005, 0.0015];
-wn_lim = [0.0008, 0.0020];
-ln_lim = [0.0008, 0.0025];
-wi_lim = [0.0035, 0.0075];
-variale_num = 5;
+%% Internal geometry limits
+
+% cavity height
+hi_lim = [0.0030, 0.0050];
+
+% through-channel width
+ne_lim = [0.0015, 0.0030];
+
+% neck horizontal length
+wn_lim = [0.0005, 0.0015];
+
+% neck opening height
+ln_lim = [0.0008, 0.0018];
+
+% cavity horizontal width
+wi_lim = [0.0030, 0.0060];
+variale_num = 9;
 %% GA Parameters
 iterations = 1e4;
 population_size = 30;
