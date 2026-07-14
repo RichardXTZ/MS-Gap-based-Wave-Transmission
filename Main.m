@@ -51,7 +51,7 @@ minsize = 0.001;
 R_tot = (cell_sizey-minsize*2)/2;
 
 R_lim = [minsize*2,tot_sizex/5];%1
-d_lim = [minsize*2,tot_sizex/6];%2
+d_lim = [minsize*2,tot_sizex/5];%2
 wn_lim = [minsize,minsize*6];%2
 dc_lim = [minsize,minsize*8];%1
 prop_lim = [0.1,0.9];%NaN
@@ -61,8 +61,8 @@ variale_num = 6;
 %% GA Parameters
 iterations = 1e4;
 population_size = 30;
-crossover_probability = 0.84;
-variation_probability = 0.15;
+crossover_probability = 0.8;
+variation_probability = 0.2;
 gene_length = 10;
 individual_size = variale_num*gene_length; 
 
