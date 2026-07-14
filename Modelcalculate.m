@@ -42,14 +42,18 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         model.param.set('minsize',[num2str(geo_para(7)),'[m]']);
     
     
-        model.param.set('wi_ori',[num2str(var_para(1)),'[m]']);
-        model.param.set('hi',[num2str(var_para(2)),'[m]']);
-        model.param.set('wi2_ori',[num2str(var_para(3)),'[m]']);
+        model.param.set('wi_ori',[num2str(var_para(1)),'[m]']);  
+        model.param.set('wi2_ori',[num2str(var_para(2)),'[m]']);
+
+        model.param.set('hi',[num2str(var_para(3)),'[m]']);
         model.param.set('hi2',[num2str(var_para(4)),'[m]']);
+
         model.param.set('ne',[num2str(var_para(5)),'[m]']);
+
         model.param.set('wn',[num2str(var_para(6)),'[m]']);
-        model.param.set('ln',[num2str(var_para(7)),'[m]']);
-        model.param.set('wn2',[num2str(var_para(8)),'[m]']);
+        model.param.set('wn2',[num2str(var_para(7)),'[m]']);
+
+        model.param.set('ln',[num2str(var_para(8)),'[m]']);
         model.param.set('ln2',[num2str(var_para(9)),'[m]']);
         model.param.set('wi','min(wi_ori,tot_sizex-w_beam*2-wn-ne)');
         model.param.set('wi2','min(wi2_ori,tot_sizex-w_beam*2-wn2-ne)');

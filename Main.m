@@ -70,7 +70,7 @@ variale_num = 9;
 iterations = 1e4;
 population_size = 30;
 crossover_probability = 0.84;
-variation_probability = 0.15;
+variation_probability = 0.1;
 gene_length = 10;
 individual_size = variale_num*gene_length; 
 
