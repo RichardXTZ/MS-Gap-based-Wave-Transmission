@@ -43,7 +43,7 @@ cell_sizey = 0.024;
 air_sizey = lambda_air*2;
 solid_sizey = lambda_bar*2;
 
-cav_h = lambda_air;
+cav_h = 0.035;
 
 minsize = 0.001;
 
@@ -75,9 +75,9 @@ gene_length = 10;
 individual_size = variale_num*gene_length; 
 
 %% Data save set
-mk_path = [rootPath,'/res/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex)];
+mk_path = [rootPath,'/res/result/',num2str(f),'-',num2str(cav_h),'-',num2str(tot_sizex)];
 da_path = [rootPath,'/res/data'];
-Target_path = [rootPath,'/res/result/',num2str(f),'-',num2str(Target_pha),'-',num2str(tot_sizex),'.txt'];
+Target_path = [rootPath,'/res/result/',num2str(f),'-',num2str(cav_h),'-',num2str(tot_sizex),'.txt'];
 mkdir(da_path);
 mkdir(mk_path);
 
