@@ -74,7 +74,7 @@ d_lim = [minsize*2,tot_sizex/5];%2
 wn_lim = [minsize,minsize*6];%2
 dc_lim = [minsize,minsize*8];%1
 prop_lim = [0.1,0.9];%NaN
-theta_lim = [0,180];
+theta_lim = [0,360];
 
 variale_num = 7;
 %% GA Parameters
