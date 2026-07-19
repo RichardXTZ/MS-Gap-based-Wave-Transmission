@@ -18,20 +18,35 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     model.param.set('c_air',[num2str(mat_para(3)),'[m/s]']);
     model.param.set('rho_air',[num2str(mat_para(4)),'[kg/(m^3)]']);
     model.param.set('p0','sqrt(c_air*rho_air)');
-    model.param.set('rho_bar',[num2str(mat_para(6)),'[kg/(m^3)]']);
-    model.param.set('nu_bar',num2str(mat_para(7)));
-    model.param.set('E_bar_ori',[num2str(mat_para(8)),'[Pa]']);
-    model.param.set('E_bar','E_bar_ori*(1+E0*i)');
+    model.param.set('Basic_angle',[num2str(mat_para(6)),'[deg]']);
+    model.param.set('Target_angle','Basic_angle');
     model.param.set('E0','0.0');
-    model.param.set('c_bar', 'sqrt((E_bar_ori*(1-nu_bar))/(rho_bar*(1+nu_bar)*(1-2*nu_bar)))');
-    model.param.set('lambda_bar','c_bar/f');
-    model.param.set('rho_meta','rho_bar');
-    model.param.set('nu_meta','nu_bar');
-    model.param.set('E_meta_ori','E_bar_ori');
-    model.param.set('E_meta','E_meta_ori*(1+E0*i)');
-    model.param.set('c_meta', 'sqrt((E_meta_ori*(1-nu_meta))/(rho_meta*(1+nu_meta)*(1-2*nu_meta)))');
-    model.param.set('lambda_meta','c_meta/f');
 
+    model.param.set('rho_meta',[num2str(mat_para(7)),'[kg/(m^3)]']);
+    model.param.set('nu_meta',num2str(mat_para(8)));
+    model.param.set('E_L_meta_ori',[num2str(mat_para(9)),'[Pa]']);
+    model.param.set('E_L_meta','E_L_meta_ori*(1+E0*i)');
+    model.param.set('c_L_meta', 'sqrt((E_L_meta*(1-nu_meta))/(rho_meta*(1+nu_meta)*(1-2*nu_meta)))');
+    model.param.set('E_T_meta_ori',[num2str(mat_para(10)),'[Pa]']);
+    model.param.set('E_T_meta','E_T_meta_ori*(1+E0*i)');
+    model.param.set('c_T_meta', 'sqrt((E_T_meta)/(2*rho_meta*(1+nu_meta)))');
+    model.param.set('lambda_L_meta', 'c_L_meta/f');
+
+    model.param.set('rho_bar',[num2str(mat_para(11)),'[kg/(m^3)]']);
+    model.param.set('nu_bar',num2str(mat_para(12)));
+    model.param.set('E_L_bar_ori',[num2str(mat_para(13)),'[Pa]']);
+    model.param.set('E_T_bar_ori',[num2str(mat_para(14)),'[Pa]']);
+    model.param.set('E_L_bar','E_L_bar_ori*(1+E0*i)');
+    model.param.set('c_L_bar', 'sqrt((E_L_bar*(1-nu_bar))/(rho_bar*(1+nu_bar)*(1-2*nu_bar)))');
+    model.param.set('E_T_bar','E_T_bar_ori*(1+E0*i)');
+    model.param.set('c_T_bar', 'sqrt((E_L_bar)/(2*rho_bar*(1+nu_bar)))');
+    model.param.set('lambda_L_bar', 'c_L_bar/f');
+
+    model.param.set('G0', 'E_L_bar/(2*(1+nu_bar))');
+    model.param.set('M0', 'G0*(4*G0-E_L_bar)/(3*G0-E_L_bar)');
+    model.param.set('za', 'c_air*rho_air');
+    model.param.set('zL', 'c_L_bar*rho_bar');
+    model.param.set('zT', 'c_T_bar*rho_bar');
 
     model.param.set('w_beam',[num2str(geo_para(1)),'[m]']);
     model.param.set('tot_sizex',[num2str(geo_para(2)),'[m]']);
@@ -48,7 +63,8 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     model.param.set('wnu',[num2str(var_para(4)),'[m]']);
     model.param.set('wnd',[num2str(var_para(5)),'[m]']);
     model.param.set('dc',[num2str(var_para(6)),'[m]']);
-    model.param.set('d2','min(d2_ori,tot_sizex/2-R1-d1-w_beam)');
+    model.param.set('d2','min(d2_ori,tot_sizex/2-R1-d1-w_beam-0.001[m])');
+    model.param.set('theta',[num2str(var_para(7)),'[deg]']);
 
     R = var_para(1);
     d1 = var_para(2);
@@ -78,8 +94,8 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     myAir.set('pos',{'0' 'cell_sizey'});
 
     myBarPML = myGeom.create('BarPML','Rectangle');
-    myBarPML.set('size',{'tot_sizex' 'lambda_bar'});
-    myBarPML.set('pos',{'0' '-cav_h-bar_sizey-lambda_bar'});
+    myBarPML.set('size',{'tot_sizex' 'lambda_L_bar'});
+    myBarPML.set('pos',{'0' '-cav_h-bar_sizey-lambda_L_bar'});
 
     myAirPML = myGeom.create('AirPML','Rectangle');
     myAirPML.set('size',{'tot_sizex' 'lambda_air'});
@@ -104,11 +120,11 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     myR3.set('r', 'R1');
 
     myCor1 = myGeom.create('Cor1','Rectangle');
-    myCor1.set('size',{'min(wnd,R3-R2)' 'cell_sizey/2'});
+    myCor1.set('size',{'min(wnd,R3-R2-0.0001[m])' 'cell_sizey/2'});
     myCor1.set('pos',{'tot_sizex/2-R3' '0'});
 
     myCor2 = myGeom.create('Cor2','Rectangle');
-    myCor2.set('size',{'min(wnd,R3-R2)' 'cell_sizey/2'});
+    myCor2.set('size',{'min(wnd,R3-R2-0.0001[m])' 'cell_sizey/2'});
     myCor2.set('pos',{'tot_sizex/2+R3-min(wnd,R3-R2)' '0'});
 
     myCor3 = myGeom.create('Cor3','Rectangle');
@@ -119,9 +135,13 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     myNec.set('size',{'min(dc,R1)' '(R3+R2)/2'});
     myNec.set('pos',{'tot_sizex/2-min(dc,R1)/2' 'cell_sizey/2-(R3+R2)/2'});
 
-   
+    myRot = myGeom.create('Rot', 'Rotate');
+    myRot.set('rot', 'theta');
+    myRot.set('pos', {'tot_sizex/2' 'cell_sizey/2'});
+    myRot.selection('input').set({'Nec' 'c3' 'dif1'});
+
     myMetauin = myGeom.create('uni1', 'Union');
-    myMetauin.selection('input').set({'c3' 'dif1' 'Cor1' 'Cor2' 'Cor3' 'Nec'});
+    myMetauin.selection('input').set({'Rot(1)' 'Rot(2)' 'Rot(3)' 'Cor1' 'Cor2' 'Cor3'});
     myMetauin.set('intbnd', false);
     
 
@@ -196,7 +216,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     strBarPMLsel = 'BarPMLsel';
     myBarPMLsel = myComp.selection.create(strBarPMLsel,'Box');
     myBarPMLsel.label(strBarPMLsel);
-%     myBarPMLsel.set('ymin',{'-bar_sizey-cav_h-lambda_bar'});
+%     myBarPMLsel.set('ymin',{'-bar_sizey-cav_h-lambda_L_bar'});
     myBarPMLsel.set('ymax',{'-bar_sizey-cav_h'});
     myBarPMLsel.set('condition', 'allvertices');
     
@@ -243,7 +263,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     myPML2 = myComp.coordSystem.create('pml2', 'PML');
     myPML2.selection.named('BarPMLsel');
     myPML2.set('wavelengthSourceType', 'userDefined');
-    myPML2.set('typicalWavelength', 'lambda_bar');
+    myPML2.set('typicalWavelength', 'lambda_L_bar');
 
     % Create Acpr Physics
     myAcpr = myComp.physics.create('acpr', 'PressureAcoustics', 'geom1');
@@ -257,9 +277,10 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
 
     myBpf = myAcpr.create('bpf1', 'BackgroundPressureField', 2);
     myBpf.selection.named({strAirsel});
-    myBpf.set('c', 'c_air');
+    myBpf.set('dir', {'sin(Target_angle)'; '-cos(Target_angle)'; '0'});
     myBpf.set('pamp', 'p0');
-    myBpf.set('dir', [0 -1 0]);
+    myBpf.set('c_mat', 'userdef');
+    myBpf.set('c', 'c_air');
 
     myPCair = myAcpr.create('pc1', 'PeriodicCondition', 1);
     myPCair.selection.named({strSidesel});
@@ -267,10 +288,11 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
 
     mySolid = myComp.physics.create('solid', 'SolidMechanics', 'geom1');
     mySolid.selection.named({strSolidTOsel});
+    myPCair.set('kFloquet', {'(2*pi*freq/c_air)*sin(Target_angle)' '-(2*pi*freq/c_air)*cos(Target_angle)' '0'});
 
     myLemm1 = mySolid.feature('lemm1');
     myLemm1.set('E_mat', 'userdef');
-    myLemm1.set('E', 'E_meta');
+    myLemm1.set('E', 'E_L_meta');
     myLemm1.set('nu_mat', 'userdef');
     myLemm1.set('nu', 'nu_meta');
     myLemm1.set('rho_mat', 'userdef');
@@ -280,7 +302,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     myLemm2 = mySolid.create('lemm2', 'LinearElasticModel', 2);
     myLemm2.selection.named({strBarsel});
     myLemm2.set('E_mat', 'userdef');
-    myLemm2.set('E', 'E_bar');
+    myLemm2.set('E', 'E_L_bar');
     myLemm2.set('nu_mat', 'userdef');
     myLemm2.set('nu', 'nu_bar');
     myLemm2.set('rho_mat', 'userdef');
@@ -290,6 +312,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     myPCsolid = mySolid.create('pc2', 'PeriodicCondition', 1);
     myPCsolid.selection.named({strSidesel});
     myPCsolid.set('PeriodicType', 'Floquet');
+    myPCsolid.set('kFloquet', {'(2*pi*freq/c_air)*sin(Target_angle)' '-(2*pi*freq/c_air)*cos(Target_angle)' '0'});
 
     % Create Multi Physics
     myMulti = myComp.multiphysics.create('asb1', 'AcousticStructureBoundary', 1);
@@ -310,7 +333,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     myMeshGap.selection.set([3]);
     myMeshGapsize = myMeshGap.create('size1', 'Size');
     myMeshGapsize.set('custom', 'on');
-    myMeshGapsize.set('hmax', 'lambda_air/12');
+    myMeshGapsize.set('hmax', 'lambda_air/8');
     myMeshGapsize.set('hmaxactive', true);
     myMeshGapsize.set('hmin', 'minsize/200');
     myMeshGapsize.set('hminactive', true);
@@ -330,7 +353,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     myMeshbar.selection.set([1 2]);
     myMeshbarsize = myMeshbar.create('size1', 'Size');
     myMeshbarsize.set('custom', 'on');
-    myMeshbarsize.set('hmax', 'lambda_bar/24');
+    myMeshbarsize.set('hmax', 'lambda_L_bar/16');
     myMeshbarsize.set('hmaxactive', true);
     myMeshbarsize.set('hmin', 'minsize/200');
     myMeshbarsize.set('hminactive', true);
@@ -339,88 +362,64 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     model.component('comp1').mesh('mesh1').feature('size').set('hgrad', 1.1);
     
     model.study.create('std1');
+    model.study('std1').create('param', 'Parametric');
     model.study('std1').create('freq', 'Frequency');
-    model.study('std1').feature('freq').activate('acpr', true);
-    model.study('std1').feature('freq').activate('solid', true);
-    model.study('std1').feature('freq').activate('asb1', true);
-    model.study('std1').feature('freq').set('plist', 'range(f-f_del,f_del,f+f_del)');
     
     model.sol.create('sol1');
     model.sol('sol1').study('std1');
-    
-    model.study('std1').feature('freq').set('notlistsolnum', 1);
-    model.study('std1').feature('freq').set('notsolnum', '1');
-    model.study('std1').feature('freq').set('listsolnum', 1);
-    model.study('std1').feature('freq').set('solnum', '1');
-    
-    model.sol('sol1').create('st1', 'StudyStep');
-    model.sol('sol1').feature('st1').set('study', 'std1');
-    model.sol('sol1').feature('st1').set('studystep', 'freq');
-    model.sol('sol1').create('v1', 'Variables');
-    model.sol('sol1').feature('v1').set('control', 'freq');
-    model.sol('sol1').create('s1', 'Stationary');
-    model.sol('sol1').feature('s1').set('stol', 0.001);
-    model.sol('sol1').feature('s1').create('p1', 'Parametric');
-    model.sol('sol1').feature('s1').feature.remove('pDef');
-    model.sol('sol1').feature('s1').feature('p1').set('pname', {'freq'});
-    model.sol('sol1').feature('s1').feature('p1').set('plistarr', {'range(f-f_del,f_del,f+f_del)'});
-    model.sol('sol1').feature('s1').feature('p1').set('punit', {'Hz'});
-    model.sol('sol1').feature('s1').feature('p1').set('pcontinuationmode', 'no');
-    model.sol('sol1').feature('s1').feature('p1').set('preusesol', 'auto');
-    model.sol('sol1').feature('s1').feature('p1').set('pdistrib', 'off');
-    model.sol('sol1').feature('s1').feature('p1').set('plot', 'off');
-    model.sol('sol1').feature('s1').feature('p1').set('plotgroup', 'Default');
-    model.sol('sol1').feature('s1').feature('p1').set('probesel', 'all');
-    model.sol('sol1').feature('s1').feature('p1').set('probes', {});
-    model.sol('sol1').feature('s1').feature('p1').set('control', 'freq');
-    model.sol('sol1').feature('s1').set('control', 'freq');
-    model.sol('sol1').feature('s1').feature('aDef').set('complexfun', true);
-    model.sol('sol1').feature('s1').feature('aDef').set('cachepattern', true);
-    model.sol('sol1').feature('s1').feature('aDef').set('matherr', true);
-    model.sol('sol1').feature('s1').feature('aDef').set('blocksizeactive', false);
-    model.sol('sol1').feature('s1').create('seDef', 'Segregated');
-    model.sol('sol1').feature('s1').create('fc1', 'FullyCoupled');
-    model.sol('sol1').feature('s1').feature('fc1').set('linsolver', 'dDef');
-    model.sol('sol1').feature('s1').feature.remove('fcDef');
-    model.sol('sol1').feature('s1').feature.remove('seDef');
     model.sol('sol1').attach('std1');
-
+    model.sol('sol1').create('st1', 'StudyStep');
+    model.sol('sol1').create('v1', 'Variables');
+    model.sol('sol1').create('s1', 'Stationary');
+    model.sol('sol1').feature('s1').create('p1', 'Parametric');
+    model.sol('sol1').feature('s1').create('fc1', 'FullyCoupled');
+    model.sol('sol1').feature('s1').feature.remove('fcDef');
+    
+    model.study('std1').feature('param').set('pname', {'Target_angle'});
+    model.study('std1').feature('param').set('plistarr', {'{Basic_angle,-Basic_angle}'});
+    model.study('std1').feature('param').set('punit', {'deg'});
+    model.study('std1').feature('freq').set('plist', 'f');
+    
+    model.sol('sol1').attach('std1');
+    model.sol('sol1').feature('st1').label('Compile Equations: Frequency Domain');
+    model.sol('sol1').feature('v1').label('Dependent Variables 1.1');
+    model.sol('sol1').feature('v1').set('clistctrl', {'p1'});
+    model.sol('sol1').feature('v1').set('cname', {'Target_angle'});
+    model.sol('sol1').feature('v1').set('clist', {'Basic_angle -Basic_angle'});
+    model.sol('sol1').feature('s1').label('Stationary Solver 1.1');
+    model.sol('sol1').feature('s1').set('probesel', 'none');
+    model.sol('sol1').feature('s1').feature('dDef').label('Direct 1');
+    model.sol('sol1').feature('s1').feature('aDef').label('Advanced 1');
+    model.sol('sol1').feature('s1').feature('aDef').set('cachepattern', true);
+    model.sol('sol1').feature('s1').feature('aDef').set('complexfun', true);
+    model.sol('sol1').feature('s1').feature('p1').label('Parametric 1.1');
+    model.sol('sol1').feature('s1').feature('p1').set('control', 'param');
+    model.sol('sol1').feature('s1').feature('p1').set('pname', {'Target_angle'});
+    model.sol('sol1').feature('s1').feature('p1').set('plistarr', {'{Basic_angle,-Basic_angle}'});
+    model.sol('sol1').feature('s1').feature('p1').set('punit', {'deg'});
+    model.sol('sol1').feature('s1').feature('p1').set('pcontinuationmode', 'no');
+    model.sol('sol1').feature('s1').feature('fc1').label('Fully Coupled 1.1');
     model.sol('sol1').runAll;
 
     myResult = model.result;
     myExport = myResult.export.create('tbl1', 'Table');
-    myExport2 = myResult.export.create('tbl2', 'Table');
     myCln = myResult.dataset.create('cln1', 'CutLine2D');
-    myCln.set('genpoints', {'0' 'cell_sizey+lambda_air*1.2' ; 'tot_sizex' 'cell_sizey+lambda_air*1.2'});
-
-    myCln2 = myResult.dataset.create('cln2', 'CutLine2D');
-    myCln2.set('genpoints', {'0' '-cav_h-lambda_bar*1.2' ; 'tot_sizex' '-cav_h-lambda_bar*1.2'});
+    myCln.set('genpoints', {'0' '-cav_h-lambda_L_bar*1.2' ; 'tot_sizex' '-cav_h-lambda_L_bar*1.2'});
 
     myAve = myResult.numerical.create('av1', 'AvLine');
     myAve.set('probetag', 'none');
     myAve.set('data', 'cln1');
+    
     myAve.set('table', 'tbl1');
-    myAve.set('expr', {'abs(acpr.p_s)/p0'});
+    myAve.set('expr', {'abs((uX+vY)*M0/(zL^0.5))' 'abs((uY-vX)*G0/(zT^0.5))'});
     myAve.set('unit', {'Pa'});
     myAve.set('descr', {''});
     myAve.setResult;
-
-    myAve2 = myResult.numerical.create('av2', 'AvLine');
-    myAve2.set('probetag', 'none');
-    myAve2.set('data', 'cln2');
-    myAve2.set('table', 'tbl2');
-    myAve2.set('expr', {'(solid.sy)/sqrt(c_bar*rho_bar)'});
-    myAve2.set('unit', {'Pa'});
-    myAve2.set('descr', {''});
-    myAve2.setResult;
-
+    
     myExport.set('filename',current_path(1));
     myExport.set('header', false);
     myExport.run;
-    myExport2.set('filename',current_path(2));
-    myExport2.set('header', false);
-    myExport2.set('table', 'tbl2');
-    myExport2.run;
+
 
 
 

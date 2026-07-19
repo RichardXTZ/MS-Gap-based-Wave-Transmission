@@ -1,8 +1,8 @@
 mphstartPath = 'D:\Program Files\COMSOL\COMSOL56\Multiphysics\mli';
 % 
-% Port = 2101:2110;
-% Port_num=size(Port,2);
-% parpool(Port_num);
+Port = 2121:2130;
+Port_num=size(Port,2);
+parpool(Port_num);
 
 initial_population = round(rand(population_size,individual_size));
 current_population = zeros(population_size,individual_size);
@@ -22,27 +22,27 @@ addpath(pro_path);
 for era_num = 1:iterations
     t0=tic;
     current_population = initial_population;
-    [result_population] = Translation(current_population,gene_length,R_lim,d_lim,wn_lim,dc_lim,prop_lim,0.00001);
+    [result_population] = Translation(current_population,gene_length,R_lim,d_lim,wn_lim,dc_lim,theta_lim,prop_lim,0.00001);
 
-    mat_para = [para_air,para_bar];%[f,f_del,c_air,rho_air,p0];[rho_bar,nu_bar,E_bar];
+    mat_para = [para_air,para_meta,para_bar];%[f,f_del,c_air,rho_air,p0,theta];[rho_meta,nu_meta,E_L_meta,E_T_meta];[rho_bar,nu_bar,E__L_bar,E__T_bar];
     geo_para = [w_beam,tot_sizex,cell_sizey,cav_h,air_sizey,solid_sizey,minsize];
     para_total = [mat_para,geo_para];
-%     for amo=1:(population_size/Port_num)
-%         parfor port_indi=1:Port_num
-%             if era_num+amo==2
-%                 mphstart(Port(port_indi))
-%             end
-%             indi_num=(amo-1)*Port_num+port_indi;
-%             current_path = [individual_pathal(indi_num),individual_pathal2(indi_num)];
-%             Modelcalculate(mat_para,geo_para,result_population(indi_num,:),current_path);
-%         end
-% 
-%     end
-    for indi_num = 1:population_size
-%         indi_num=1;
-        current_path = [individual_pathal(indi_num),individual_pathal2(indi_num)];
-        Modelcalculate(mat_para,geo_para,result_population(indi_num,:),current_path);
+    for amo=1:(population_size/Port_num)
+        parfor port_indi=1:Port_num
+            if era_num+amo==2
+                mphstart(Port(port_indi))
+            end
+            indi_num=(amo-1)*Port_num+port_indi;
+            current_path = [individual_pathal(indi_num),individual_pathal2(indi_num)];
+            Modelcalculate(mat_para,geo_para,result_population(indi_num,:),current_path);
+        end
+
     end
+%     for indi_num = 1:population_size
+% %         indi_num=1;
+%         current_path = [individual_pathal(indi_num),individual_pathal2(indi_num)];
+%         Modelcalculate(mat_para,geo_para,result_population(indi_num,:),current_path);
+%     end
 
     for individual_num=1:population_size
         % individual_path = strcat(path,data_path,num2str(individual_num),'.txt');
@@ -51,39 +51,19 @@ for era_num = 1:iterations
         fileData=textscan(fileOPID,'%f');
         fclose(fileOPID);
         fileResult=fileData{:};
-        Apre_L=fileResult(2);
-        Apre_M=fileResult(4);
-        Apre_R=fileResult(6);
+        L_L(individual_num)=fileResult(2);
+        L_T(individual_num)=fileResult(3);
+        R_L(individual_num)=fileResult(5);
+        R_T(individual_num)=fileResult(6);
 
-        para_path2 = individual_pathal2(individual_num);
-        fileOPID=fopen(para_path2);
-        fileData=textscan(fileOPID,'%f');
-        fclose(fileOPID);
-        fileResult=fileData{:};
-        Apre_L2=fileResult(2);
-        Apre_M2=fileResult(4);
-        Apre_R2=fileResult(6);
-
-        ampRe_L(individual_num)=abs(Apre_L);
-        ampRe_LT(individual_num)=abs(Apre_L2);
-        ampRe_M(individual_num)=abs(Apre_M);
-        ampRe_MT(individual_num)=abs(Apre_M2);
-        ampRe_R(individual_num)=abs(Apre_R);
-        ampRe_RT(individual_num)=abs(Apre_R2);
     end
 
-     % delta_test_L = abs((ampRe_L).^2)*0.8+0.2*abs(argRe_L2-Target_pha)/pi;
-     % delta_test_M = abs((ampRe_M).^2)*0.8+0.2*abs(argRe_M2-Target_pha)/pi;
-     % delta_test_R = abs((ampRe_R).^2)*0.8+0.2*abs(argRe_R2-Target_pha)/pi;
 
-     delta_test_L = abs(1-(ampRe_LT).^2);
-     delta_test_M = abs(1-(ampRe_MT).^2);
-     delta_test_R = abs(1-(ampRe_RT).^2);
+     delta_test_L = 1-abs(L_L).^2;%Left L More
+     delta_test_T = 1-abs(R_T).^2;%Right T More
 
-     delta_test_ave = (delta_test_L+delta_test_R)./2;
-     delta_test=delta_test_M*0.9+delta_test_ave*0.1;
-
-     delta_T = [delta_test',delta_test_M',delta_test_ave'];
+     delta_test=max(delta_test_L,delta_test_T);
+     delta_T = [delta_test',delta_test_L',delta_test_T'];
  
      new_population_data = [delta_T,current_population,result_population];
     
