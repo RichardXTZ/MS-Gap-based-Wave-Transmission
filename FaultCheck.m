@@ -17,9 +17,9 @@ while ~feof(fid)
     i=i+1;
 end
 fclose(fid);
-mat_para = basic(4:11);
+mat_para = basic(4:17);
 % para_stru_basic = para_stru_basic*3/5;
-geo_para = basic(12:18);
+geo_para = basic(18:end);
 result_population = code;
 
 
@@ -28,7 +28,7 @@ mesh_n = 12;
 
 check = c;
 
-for i=13:size(check,1)
+for i=1:size(check,1)
 
 Modelcalculate(mat_para,geo_para,check(i,:),individual_path);
 
