@@ -62,7 +62,7 @@ cell_sizey = tot_sizex;
 air_sizey = lambda_air*2;
 solid_sizey = lambda_L_bar*2;
 
-cav_h = 0.0343/2;
+cav_h = 0.0343/10;
 
 minsize = 0.001;
 
