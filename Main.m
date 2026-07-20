@@ -10,7 +10,7 @@ addpath(pro_path);
 
 %% Acoustic Parameters
 f = 10000;
-f_del = 100;
+f_del = 50;
 c_air = 343;
 rho_air = 1.21;
 lambda_air = c_air/f;
@@ -43,7 +43,7 @@ cell_sizey = 0.024;
 air_sizey = lambda_air*2;
 solid_sizey = lambda_bar*2;
 
-cav_h = 0.04;
+cav_h = 0.0343;
 
 minsize = 0.001;
 
