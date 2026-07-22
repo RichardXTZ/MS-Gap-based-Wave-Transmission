@@ -9,7 +9,7 @@ pro_path = [rootPath,'/program'];
 addpath(pro_path);
 
 %% Acoustic Parameters
-f = 10000;
+f = 20000;
 f_del = 50;
 c_air = 343;
 rho_air = 1.21;
@@ -37,13 +37,13 @@ para_bar = [rho_bar,nu_bar,E_bar];
 % const
 w_beam = 0.0012;
 
-tot_sizex = 0.03;
+tot_sizex = 0.016;
 cell_sizey = tot_sizex;
 
 air_sizey = lambda_air*2;
 solid_sizey = lambda_bar*2;
 
-cav_h = 0.04;
+cav_h = 0.01715;
 
 minsize = 0.001;
 
