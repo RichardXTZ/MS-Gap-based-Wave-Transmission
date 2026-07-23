@@ -21,9 +21,9 @@ Target_pha = pi/2;
 
 %% Solid Parameters
 % Epoxy
-rho_epo = 1140;%kg/m^3
+rho_epo = 1060;%kg/m^3
 nu_epo = 0.4;
-E_epo = 2.964e9;
+E_epo = 2.98e9;
 
 rho_bar = rho_epo;
 nu_bar = nu_epo; 
@@ -43,7 +43,7 @@ cell_sizey = tot_sizex;
 air_sizey = lambda_air*2;
 solid_sizey = lambda_bar*2;
 
-cav_h = 0.01715;
+cav_h = 0.008;
 
 minsize = 0.001;
 

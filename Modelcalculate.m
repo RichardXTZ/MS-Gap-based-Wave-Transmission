@@ -25,9 +25,9 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
     model.param.set('E0','0.0');
     model.param.set('c_bar', 'sqrt((E_bar_ori*(1-nu_bar))/(rho_bar*(1+nu_bar)*(1-2*nu_bar)))');
     model.param.set('lambda_bar','c_bar/f');
-    model.param.set('rho_meta','rho_bar');
-    model.param.set('nu_meta','nu_bar');
-    model.param.set('E_meta_ori','E_bar_ori');
+    model.param.set('rho_meta','1140[kg/(m^3)]');
+    model.param.set('nu_meta','0.4');
+    model.param.set('E_meta_ori','2.964e9[Pa]');
     model.param.set('E_meta','E_meta_ori*(1+E0*i)');
     model.param.set('c_meta', 'sqrt((E_meta_ori*(1-nu_meta))/(rho_meta*(1+nu_meta)*(1-2*nu_meta)))');
     model.param.set('lambda_meta','c_meta/f');
