@@ -22,7 +22,7 @@ addpath(pro_path);
 for era_num = 1:iterations
     t0=tic;
     current_population = initial_population;
-    [result_population] = Translation(current_population,gene_length,wi_lim,hi_lim,ne_lim,wn_lim,ln_lim,0.00001);
+    [result_population] = Translation(current_population,gene_length,wn_lim,wc_lim,hc_lim,0.00001);
 
     mat_para = [para_air,para_bar];%[f,f_del,c_air,rho_air,p0];[rho_bar,nu_bar,E_bar];
     geo_para = [w_beam,tot_sizex,cell_sizey,cav_h,air_sizey,solid_sizey,minsize];

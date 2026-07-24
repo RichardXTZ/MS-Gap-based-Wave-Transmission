@@ -10,7 +10,7 @@ addpath(pro_path);
 
 %% Acoustic Parameters
 f = 10000;
-f_del = 50;
+f_del = 500;
 c_air = 343;
 rho_air = 1.21;
 lambda_air = c_air/f;
@@ -43,7 +43,7 @@ cell_sizey = 0.024;
 air_sizey = lambda_air*2;
 solid_sizey = lambda_bar*2;
 
-cav_h = 0.004;
+cav_h = 0.017;
 
 minsize = 0.001;
 
@@ -51,21 +51,15 @@ minsize = 0.001;
 
 %% Internal geometry limits
 
-% cavity height
-hi_lim = [0.0030, 0.0050];
+% Neck w
+wn_lim = [0.0007, 0.0048];
 
-% through-channel width
-ne_lim = [0.0015, 0.0030];
-
-% neck horizontal length
-wn_lim = [0.0005, 0.0015];
-
-% neck opening height
-ln_lim = [0.0008, 0.0018];
 
 % cavity horizontal width
-wi_lim = [0.0030, 0.0060];
-variale_num = 9;
+wc_lim = [0.005, tot_sizex-2*w_beam];
+hc_lim = [0.002, (cell_sizey-2*w_beam-4*minsize)/2];
+
+variale_num = 7;
 %% GA Parameters
 iterations = 1e4;
 population_size = 30;

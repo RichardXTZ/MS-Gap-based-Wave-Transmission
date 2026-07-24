@@ -42,23 +42,16 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         model.param.set('minsize',[num2str(geo_para(7)),'[m]']);
     
     
-        model.param.set('wi_ori',[num2str(var_para(1)),'[m]']);  
-        model.param.set('wi2_ori',[num2str(var_para(2)),'[m]']);
+        model.param.set('wn1',[num2str(var_para(1)),'[m]']);  
+        model.param.set('wn2',[num2str(var_para(2)),'[m]']);
+        model.param.set('wn3',[num2str(var_para(3)),'[m]']);
 
-        model.param.set('hi',[num2str(var_para(3)),'[m]']);
-        model.param.set('hi2',[num2str(var_para(4)),'[m]']);
+        model.param.set('wc1',[num2str(var_para(4)),'[m]']);
+        model.param.set('wc2',[num2str(var_para(5)),'[m]']);
 
-        model.param.set('ne',[num2str(var_para(5)),'[m]']);
+        model.param.set('hc1',[num2str(var_para(6)),'[m]']);
+        model.param.set('hc2',[num2str(var_para(7)),'[m]']);
 
-        model.param.set('wn',[num2str(var_para(6)),'[m]']);
-        model.param.set('wn2',[num2str(var_para(7)),'[m]']);
-
-        model.param.set('ln',[num2str(var_para(8)),'[m]']);
-        model.param.set('ln2',[num2str(var_para(9)),'[m]']);
-        model.param.set('wi','min(wi_ori,tot_sizex-w_beam*2-wn-ne)');
-        model.param.set('wi2','min(wi2_ori,tot_sizex-w_beam*2-wn2-ne)');
-%         model.param.set('du','min(R,d1)');
-%         model.param.set('dd','min(R,d2)');
     
 
         %% Create Goem
@@ -82,33 +75,30 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         myAirPML.set('size',{'tot_sizex' 'lambda_air'});
         myAirPML.set('pos',{'0' 'cell_sizey+air_sizey'});
        
-        
     
-        myCor = myGeom.create('Cor','Rectangle');
-        myCor.set('size',{'ne' 'cell_sizey'});
-        myCor.set('pos',{'w_beam' '0'});
-    
-        myNec = myGeom.create('Nec','Rectangle');
-        myNec.set('size',{'wn' 'ln'});
-        myNec.set('pos',{'w_beam+ne' '(cell_sizey/2-ln)/2'});
-
-        myCav = myGeom.create('Cav','Rectangle');
-        myCav.set('size',{'wi' 'hi'});
-        myCav.set('pos',{'w_beam+wn+ne' '(cell_sizey/2-hi)/2'});
-
-        myCav2 = myGeom.create('Cav2','Rectangle');
-        myCav2.set('size',{'wi2' 'hi2'});
-        myCav2.set('pos',{'w_beam+wn2+ne' '(cell_sizey/2-hi2)/2+cell_sizey/2'});
+        myNec1 = myGeom.create('Nec1','Rectangle');
+        myNec1.set('size',{'wn1' 'cell_sizey/4-hc1/2'});
+        myNec1.set('pos',{'tot_sizex/2-wn1/2' '3*cell_sizey/4+hc1/2'});
 
         myNec2 = myGeom.create('Nec2','Rectangle');
-        myNec2.set('size',{'wn2' 'ln2'});
-        myNec2.set('pos',{'w_beam+ne' '(cell_sizey/2-ln2)/2+cell_sizey/2'});
+        myNec2.set('size',{'wn2' 'cell_sizey/2-hc1/2-hc2/2'});
+        myNec2.set('pos',{'tot_sizex/2-wn2/2' 'cell_sizey/4+hc2/2'});
 
+        myNec3 = myGeom.create('Nec3','Rectangle');
+        myNec3.set('size',{'wn3' 'cell_sizey/4-hc2/2'});
+        myNec3.set('pos',{'tot_sizex/2-wn3/2' '0'});
 
-    
+        myCav = myGeom.create('Cav','Rectangle');
+        myCav.set('size',{'wc1' 'hc1'});
+        myCav.set('pos',{'tot_sizex/2-wc1/2' '3*cell_sizey/4-hc1/2'});
+
+        myCav2 = myGeom.create('Cav2','Rectangle');
+        myCav2.set('size',{'wc2' 'hc2'});
+        myCav2.set('pos',{'tot_sizex/2-wc2/2' 'cell_sizey/4-hc2/2'});
+
        
         myMetauin = myGeom.create('uni1', 'Union');
-        myMetauin.selection('input').set({'Cor' 'Nec' 'Cav' 'Nec2' 'Cav2'});
+        myMetauin.selection('input').set({'Nec1' 'Nec2' 'Nec3' 'Cav' 'Cav2'});
         myMetauin.set('intbnd', false);
         
     
@@ -325,7 +315,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         model.component('comp1').mesh('mesh1').feature('size').set('custom', true);
         model.component('comp1').mesh('mesh1').feature('size').set('hgrad', 1.1);
         
-        model.study.create('std1');
+        mp[model.study.create('std1');
         model.study('std1').create('freq', 'Frequency');
         model.study('std1').feature('freq').activate('acpr', true);
         model.study('std1').feature('freq').activate('solid', true);
