@@ -315,7 +315,7 @@ function Modelcalculate(mat_para,geo_para,var_para,current_path)
         model.component('comp1').mesh('mesh1').feature('size').set('custom', true);
         model.component('comp1').mesh('mesh1').feature('size').set('hgrad', 1.1);
         
-        mp[model.study.create('std1');
+        model.study.create('std1');
         model.study('std1').create('freq', 'Frequency');
         model.study('std1').feature('freq').activate('acpr', true);
         model.study('std1').feature('freq').activate('solid', true);
